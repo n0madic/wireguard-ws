@@ -1,6 +1,6 @@
-# Go Implementation of [WireGuard](https://www.wireguard.com/)
+# WireGuard-WS: WebSocket Transport for [WireGuard](https://www.wireguard.com/)
 
-This is an implementation of WireGuard in Go.
+This is a fork of [wireguard-go](https://git.zx2c4.com/wireguard-go/) with added WebSocket transport support. It allows WireGuard to tunnel through environments where UDP is blocked — corporate networks, restrictive firewalls, or HTTP proxies. Fully compatible with standard `wg` and `wg-quick` tools.
 
 ## Usage
 
