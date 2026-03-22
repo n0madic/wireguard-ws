@@ -15,7 +15,6 @@ import (
 	"strconv"
 
 	"golang.org/x/sys/unix"
-	"golang.zx2c4.com/wireguard/conn"
 	"golang.zx2c4.com/wireguard/device"
 	"golang.zx2c4.com/wireguard/ipc"
 	"golang.zx2c4.com/wireguard/tun"
@@ -48,7 +47,7 @@ func warning() {
 
 	fmt.Fprintln(os.Stderr, "┌──────────────────────────────────────────────────────┐")
 	fmt.Fprintln(os.Stderr, "│                                                      │")
-	fmt.Fprintln(os.Stderr, "│   Running wireguard-go is not required because this  │")
+	fmt.Fprintln(os.Stderr, "│   Running wireguard-ws is not required because this  │")
 	fmt.Fprintln(os.Stderr, "│   kernel has first class support for WireGuard. For  │")
 	fmt.Fprintln(os.Stderr, "│   information on installing the kernel module,       │")
 	fmt.Fprintln(os.Stderr, "│   please visit:                                      │")
@@ -59,7 +58,7 @@ func warning() {
 
 func main() {
 	if len(os.Args) == 2 && os.Args[1] == "--version" {
-		fmt.Printf("wireguard-go v%s\n\nUserspace WireGuard daemon for %s-%s.\nInformation available at https://www.wireguard.com.\nCopyright (C) Jason A. Donenfeld <Jason@zx2c4.com>.\n", Version, runtime.GOOS, runtime.GOARCH)
+		fmt.Printf("wireguard-ws v%s\n\nUserspace WireGuard daemon for %s-%s.\nInformation available at https://www.wireguard.com.\nCopyright (C) Jason A. Donenfeld <Jason@zx2c4.com>.\n", Version, runtime.GOOS, runtime.GOARCH)
 		return
 	}
 
@@ -145,7 +144,7 @@ func main() {
 		fmt.Sprintf("(%s) ", interfaceName),
 	)
 
-	logger.Verbosef("Starting wireguard-go version %s", Version)
+	logger.Verbosef("Starting wireguard-ws version %s", Version)
 
 	if err != nil {
 		logger.Errorf("Failed to create TUN device: %v", err)
@@ -222,7 +221,7 @@ func main() {
 		return
 	}
 
-	device := device.NewDevice(tdev, conn.NewDefaultBind(), logger)
+	device := device.NewDevice(tdev, createBind(logger), logger)
 
 	logger.Verbosef("Device started")
 

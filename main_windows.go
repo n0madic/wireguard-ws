@@ -12,10 +12,8 @@ import (
 
 	"golang.org/x/sys/windows"
 
-	"golang.zx2c4.com/wireguard/conn"
 	"golang.zx2c4.com/wireguard/device"
 	"golang.zx2c4.com/wireguard/ipc"
-
 	"golang.zx2c4.com/wireguard/tun"
 )
 
@@ -36,7 +34,7 @@ func main() {
 		device.LogLevelVerbose,
 		fmt.Sprintf("(%s) ", interfaceName),
 	)
-	logger.Verbosef("Starting wireguard-go version %s", Version)
+	logger.Verbosef("Starting wireguard-ws version %s", Version)
 
 	tun, err := tun.CreateTUN(interfaceName, 0)
 	if err == nil {
@@ -49,7 +47,7 @@ func main() {
 		os.Exit(ExitSetupFailed)
 	}
 
-	device := device.NewDevice(tun, conn.NewDefaultBind(), logger)
+	device := device.NewDevice(tun, createBind(logger), logger)
 	err = device.Up()
 	if err != nil {
 		logger.Errorf("Failed to bring up device: %v", err)
@@ -81,7 +79,6 @@ func main() {
 	// wait for program to terminate
 
 	signal.Notify(term, os.Interrupt)
-	signal.Notify(term, os.Kill)
 	signal.Notify(term, windows.SIGTERM)
 
 	select {
